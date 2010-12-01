@@ -21,7 +21,7 @@ class Kilt
   end
   
   def pivotal_format_date
-    date_last_activity.strftime("%Y/%m/%d%H:%M:%S")
+    URI.escape(date_last_activity.strftime("%Y/%m/%d %H:%M:%S"))
   end
   
   def update
