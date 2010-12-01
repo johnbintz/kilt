@@ -5,6 +5,7 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 require 'kilt'
 require 'spec'
 require 'spec/autorun'
+require 'ruby-debug'
 
 Spec::Runner.configure do |config|
   
@@ -27,4 +28,5 @@ end
 
 require 'fakeweb'
 
-FakeWeb.register_uri(:get, "http://www.pivotaltracker.com/services/v3/activities?limit=10", :body => latests_activities)
+#FakeWeb.register_uri(:get, "http://www.pivotaltracker.com/services/v3/activities?limit=10", :body => latests_activities)
+FakeWeb.register_uri(:get, %r|http://www.pivotaltracker\.com/|, :body => latests_activities)

@@ -4,17 +4,17 @@ require 'rake'
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
-    gem.name = "kilt"
-    gem.summary = "A client that listens to Pivotal Tracker activities and notifies them with Growl." 
-    gem.description = "A client that listens to Pivotal Tracker activities and notifies them with Growl."
-    gem.email = "dc.rec1@gmail.com"
-    gem.homepage = "http://github.com/dcrec1/kilt"
-    gem.authors = ["Diego Carrion"]
-    gem.add_dependency "rest-client"
-    gem.add_dependency "crack" 
-    gem.add_dependency "rufus-scheduler"
-    gem.add_development_dependency "rspec"
-    gem.add_development_dependency "fakeweb"
+    gem.name                      = "marcosinger-kilt"
+    gem.summary                   = "A client that listens to Pivotal Tracker activities and notifies them with Growl." 
+    gem.description               = "A client that listens to Pivotal Tracker activities and notifies them with Growl."
+    gem.email                     = "markaum@gmail.com"
+    gem.homepage                  = "http://github.com/marcosinger/kilt"
+    gem.authors                   = ["Original - Diego Carrion", "Marco Singer"]
+    gem.add_dependency              "rest-client"
+    gem.add_dependency              "crack" 
+    gem.add_dependency              "rufus-scheduler"
+    gem.add_development_dependency  "rspec"
+    gem.add_development_dependency  "fakeweb"
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
