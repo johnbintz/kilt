@@ -52,6 +52,8 @@ h2. TODO
 h2. LICENSE
 
 Copyright (c) 2010 Diego Carrion
+Copyright (c) 2011 Marco Singer
+Copyright (c) 2011 John Bintz
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

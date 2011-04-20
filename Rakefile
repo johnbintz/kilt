@@ -4,12 +4,12 @@ require 'rake'
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
-    gem.name                      = "marcosinger-kilt"
+    gem.name                      = "kilt"
     gem.summary                   = "A client that listens to Pivotal Tracker activities and notifies them with Growl." 
     gem.description               = "A client that listens to Pivotal Tracker activities and notifies them with Growl."
-    gem.email                     = "markaum@gmail.com"
-    gem.homepage                  = "http://github.com/marcosinger/kilt"
-    gem.authors                   = ["Original - Diego Carrion", "Marco Singer"]
+    gem.email                     = "john@coswellproductions.com"
+    gem.homepage                  = "http://github.com/johnbintz/kilt"
+    gem.authors                   = ["Original - Diego Carrion", "Marco Singer", "John Bintz"]
     gem.add_dependency              "rest-client"
     gem.add_dependency              "crack" 
     gem.add_dependency              "rufus-scheduler"
