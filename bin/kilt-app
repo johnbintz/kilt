@@ -5,7 +5,14 @@ require 'yaml'
 require 'kilt'
 require 'win32/process' if RUBY_PLATFORM =~ /mswin|mingw|win32/
 
-fork do  
+pid_path = File.expand_path("~/.kilt-app.pid")
+
+if File.file?(pid_path)
+  $stderr.puts "kilt is already running, PID #{File.read(pid_path).strip}. If kilt is not actually running, remove #{pid_path} and run again."
+  exit 1
+end
+
+pid = fork do  
   token = YAML.load_file(File.expand_path("~/.pivotal_tracker"))['token']
   
   Kilt.init token  
@@ -14,3 +21,6 @@ fork do
     sleep 5  
   end  
 end
+
+File.open(pid_path, 'w') { |fh| fh.puts pid }
+
