@@ -17,6 +17,10 @@ pid = fork do
   
   Kilt.init token  
 
+  %w{TERM INT KILL QUIT}.each do |signal|
+    Signal.trap(signal) { File.unlink(pid_path) }
+  end
+
   loop do  
     sleep 5  
   end  
