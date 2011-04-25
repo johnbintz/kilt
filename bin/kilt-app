@@ -8,8 +8,15 @@ require 'win32/process' if RUBY_PLATFORM =~ /mswin|mingw|win32/
 pid_path = File.expand_path("~/.kilt-app.pid")
 
 if File.file?(pid_path)
-  $stderr.puts "kilt is already running, PID #{File.read(pid_path).strip}. If kilt is not actually running, remove #{pid_path} and run again."
-  exit 1
+  pid = File.read(pid_path).strip.to_i
+  begin
+    Process.kill(0, pid)
+    $stderr.puts "kilt is already running, PID #{pid}. If kilt is not actually running, remove #{pid_path} and run again."
+    exit 1
+  rescue Errno::ESRCH
+    $stderr.puts "Old PID found, removing and re-running."
+    File.unlink(pid_path)
+  end
 end
 
 pid = fork do  
@@ -18,7 +25,9 @@ pid = fork do
   Kilt.init token  
 
   %w{TERM INT KILL QUIT}.each do |signal|
-    Signal.trap(signal) { File.unlink(pid_path) }
+    Signal.trap(signal) do
+      File.unlink(pid_path) rescue nil
+    end
   end
 
   loop do  
