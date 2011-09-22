@@ -18,32 +18,25 @@ class Kilt
   end
   
   def update
-    activities = fetch_activities
-    activities.reverse.each do |activity|
+    fetch_activities.each do |activity|
       if activity.occurred_at > date_last_activity
         notify_about activity.description
       end
     end
-    update_date_from activities
   end
 
   protected
 
   def initialize(token)
     PivotalTracker::Client.token = token
-
-    update_date_from fetch_activities
     Rufus::Scheduler.start_new.every('30s') { update }
   end
 
   private
-
-  def update_date_from(activities)
-    @date_last_activity = activities.first.occurred_at
-  end
-
   def fetch_activities
-    PivotalTracker::Activity.all(nil, :occurred_since_date => date_last_activity)
+    activities = PivotalTracker::Activity.all(nil, :occurred_since_date => date_last_activity)
+    @date_last_activity = activities.first.occurred_at
+    activities
   end
 
   def notify_about(message)
