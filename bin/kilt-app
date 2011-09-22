@@ -19,10 +19,11 @@ if File.file?(pid_path)
   end
 end
 
-pid = fork do  
-  token = YAML.load_file(File.expand_path("~/.pivotal_tracker"))['token']
-  
-  Kilt.init token  
+pid = fork do
+  token = %x{git config --global --get pivotal.api-token}.strip
+  token = YAML.load_file(File.expand_path("~/.pivotal_tracker"))['token'] if token.empty?
+
+  Kilt.init token
 
   %w{TERM INT KILL QUIT}.each do |signal|
     Signal.trap(signal) do
@@ -30,9 +31,9 @@ pid = fork do
     end
   end
 
-  loop do  
-    sleep 5  
-  end  
+  loop do
+    sleep 5
+  end
 end
 
 File.open(pid_path, 'w') { |fh| fh.puts pid }

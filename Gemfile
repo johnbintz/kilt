@@ -1,6 +1,5 @@
-gem 'rest-client'
-gem 'crack'
 gem 'rufus-scheduler'
+gem 'pivotal-tracker', '~> 0.4.0'
 
 group :development do
   gem 'rspec'

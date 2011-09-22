@@ -1,11 +1,9 @@
-require 'rest_client'
-require 'crack/xml'
+require 'pivotal-tracker'
 require 'rufus/scheduler'
+require 'time'
 #require 'snarl' if RUBY_PLATFORM =~ /mswin|mingw|win32/
 
 class Kilt
-  include Crack
-
   attr_reader :id, :date_last_activity
 
   ICON = File.expand_path(File.join(File.dirname(__FILE__), '..', 'img', 'pivotal.png'))
@@ -14,21 +12,16 @@ class Kilt
     # FIXME Diferença de 3hrs no UTC do Pivotal
     (@date_last_activity ||= Time.now) - 60*60*3
   end
-  
-  
+
   def self.init(token) 
     new token
-  end
-  
-  def pivotal_format_date
-    URI.escape(date_last_activity.strftime("%Y/%m/%d %H:%M:%S"))
   end
   
   def update
     activities = fetch_activities
     activities.reverse.each do |activity|
-      if activity['occurred_at'] > @date_last_activity
-        notify_about activity['description']
+      if activity.occurred_at > date_last_activity
+        notify_about activity.description
       end
     end
     update_date_from activities
@@ -37,7 +30,8 @@ class Kilt
   protected
 
   def initialize(token)
-    @token = token
+    PivotalTracker::Client.token = token
+
     update_date_from fetch_activities
     Rufus::Scheduler.start_new.every('30s') { update }
   end
@@ -45,13 +39,11 @@ class Kilt
   private
 
   def update_date_from(activities)
-    #@id                 = activities.first['id'].to_s
-    @date_last_activity = activities.first['occurred_at']
+    @date_last_activity = activities.first.occurred_at
   end
 
   def fetch_activities
-    return XML.parse(RestClient.get("http://www.pivotaltracker.com/services/v3/activities?occurred_since_date=#{pivotal_format_date}",
-                                    'X-TrackerToken' => @token).body)['activities']
+    PivotalTracker::Activity.all(nil, :occurred_since_date => date_last_activity)
   end
 
   def notify_about(message)
