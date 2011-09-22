@@ -1,3 +1,5 @@
+source :rubygems
+
 gem 'rufus-scheduler'
 gem 'pivotal-tracker', '~> 0.4.0'
 
