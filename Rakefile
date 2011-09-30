@@ -1,3 +1,5 @@
+require 'psych'
+
 require 'rubygems'
 require 'rake'
 
